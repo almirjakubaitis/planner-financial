@@ -30,6 +30,7 @@ Na Tela de resultado por mês é a apresentado o resultado final na versão resp
 - Css com Flexbox
 - Diversass bibliotecas para react como o React-Datepicker, React-icons, Unform/rockeseat, date-fns, uuid, etc.
 - Tecnologias para implementação (docker, postgres, apache)
+- Layout da aplicação desenvolvido no Figma
 
 
 ## 💻 Como acessar esse repositório
