@@ -1,0 +1,19 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "your password",
+  "database": "your database name",
+  "cache" : true,
+ "entities": [
+    "./dist/modules/**/infra/typeorm/entities/*.js"
+  ],
+  "migrations": [
+    "./dist/shared/infra/typeorm/migrations/*.js"
+  ],
+  "cli": {
+    "migrationsDir": "./src/shared/infra/typeorm/migrations"
+  }
+}
+

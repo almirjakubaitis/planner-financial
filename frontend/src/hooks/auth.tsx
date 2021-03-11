@@ -9,6 +9,7 @@ interface User {
 
 interface AuthState {
   token: string;
+  // user: Record<string, unknown>; // object
   user: User;
 }
 
@@ -18,6 +19,7 @@ interface SingInCredentials {
 }
 
 interface AuthContextData {
+  // user: Record<string, unknown>;
   user: User;
 
   signIn(credentials: SingInCredentials): Promise<void>;
@@ -32,6 +34,7 @@ const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem('@Planner:user');
 
     if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
       return { token, user: JSON.parse(user) };
     }
 
@@ -39,15 +42,18 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
+
     const response = await api.post('sessions', {
       email,
       password,
     });
 
-    const { token, user } = response.data;
+     const { token, user } = response.data;
 
     localStorage.setItem('@Planner:token', token);
     localStorage.setItem('@Planner:user', JSON.stringify(user));
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
   }, []);

@@ -12,9 +12,6 @@ import { DatePickerCss } from './styles';
 
 registerLocale('pt-BR', ptbr);
 
-// interface Props extends Omit<ReactDatePickerProps, 'onChange'> {
-//   name: string;
-// }
 
 interface Props extends ReactDatePickerProps {
   name: string;
@@ -23,7 +20,7 @@ interface Props extends ReactDatePickerProps {
 const DatePicker: React.FC<Props> = ({ name, ...rest }) => {
   const datepickerRef = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
-  // const [date, setDate] = useState(defaultValue || null);
+
   useEffect(() => {
     registerField({
       name: fieldName,

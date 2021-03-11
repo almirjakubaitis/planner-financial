@@ -45,7 +45,7 @@ const SignIn: React.FC = () => {
 
         await schema.validate(data, {
           abortEarly: false,
-        });
+
 
         await signIn({
           email: data.email,
@@ -59,14 +59,19 @@ const SignIn: React.FC = () => {
           title: 'Login efetuado com sucesso!',
           description: 'Bem-vindo ao Dashboard',
         });
+
+
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
+
+
 
           formRef.current?.setErrors(errors);
 
           return;
         }
+
 
         addToast({
           type: 'error',
@@ -103,10 +108,10 @@ const SignIn: React.FC = () => {
           />
           <Link to="forgot">Esqueceu sua senha?</Link>
           <button type="submit" key={buttonKeyValue}>
+            Entrar
             <span>
               <FiLogIn />
             </span>
-            Entrar
           </button>
         </Form>
 

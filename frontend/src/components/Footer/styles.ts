@@ -2,13 +2,14 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   padding: 0px 0;
-  top: -50px;
+
   position: relative;
+  margin: 0px 0px 20px;
 
   footer {
     width: 1120px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0;
     display: flex;
     align-items: center;
     align-content: center;

@@ -16,6 +16,14 @@ export const Container = styled.div`
 
     justify-content: space-between;
     font-weight: normal;
+
+    & p {
+      display: block;
+
+      & span {
+        margin-left: 61px;
+      }
+    }
   }
 
   @media only screen and (max-width: 1150px) {

@@ -11,7 +11,6 @@ import { getYear } from 'date-fns';
 import { FiArrowRight } from 'react-icons/fi';
 
 import getValidationErrors from '../../utils/getValidationErrors';
-import { useToast } from '../../hooks/toast';
 
 import Header from '../../components/Header';
 
@@ -61,15 +60,20 @@ const Year: React.FC = () => {
         localStorage.setItem('@Planner:year', JSON.stringify(year));
 
         history.push('/dashboard');
+
+
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
+
 
           formRef.current?.setErrors(errors);
 
           // eslint-disable-next-line no-useless-return
           return;
         }
+
+
       }
     },
     [history],
@@ -79,6 +83,7 @@ const Year: React.FC = () => {
     async function loadTransactions(): Promise<void> {
       if (yearDate) {
         setStartDate(new Date(`${yearDate}-11-11`) as any);
+
       }
     }
 

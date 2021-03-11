@@ -31,20 +31,10 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
 
-    // Modelo 1
-    // if (inputRef.current?.value) {
-    //   setIsFilled(true);
-    // } else {
-    //   setIsFilled(false);
-    // }
 
-    // Modelo 2 com Boolean
     setIsFilled(!!inputRef.current?.value);
   }, []);
 
-  // sempre que Utilizarmos um função dentro de uma função
-  // iremos utilizar o useCallback para impedir que a função seja recriada
-  // cada vez que uma variável de estado for atualizada.
 
   useEffect(() => {
     setIsHidden(inputRef.current?.type === 'hidden');

@@ -84,8 +84,8 @@ const EditTransactions: React.FC = () => {
   const [startDate, setStartDate] = useState();
 
   const { user } = useAuth();
-  const token = localStorage.getItem('@Planner:token');
-  const provider = user.id;
+
+  const provider_id = user.id;
 
   const { addToast } = useToast();
   const history = useHistory();
@@ -100,6 +100,8 @@ const EditTransactions: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: InsertFormData) => {
+
+
       try {
         formRef.current?.setErrors({});
 
@@ -108,7 +110,6 @@ const EditTransactions: React.FC = () => {
           value: Yup.string().required('Deve conter um número'),
           type: Yup.string().required('Tipo é obrigatório'),
           category: Yup.string().required('Categoria é obrigatória'),
-          // date: Yup.string().required('Data é obrigatória'),
           copies: Yup.string().required(
             'Parcela é obrigatória e inferior a 12',
           ),
@@ -126,16 +127,14 @@ const EditTransactions: React.FC = () => {
             date: data.date,
             copies: data.copies,
             type: data.type,
-            value: parseFloat(data.value.replace(/\s/g, '').replace(',', '.')), // convert comma to dot
+            value: parseFloat(data.value.replace(/\s/g, '').replace(',', '.')),
 
             category: data.category,
             title: data.title,
             description: data.description,
           },
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+
           },
         );
 
@@ -146,11 +145,13 @@ const EditTransactions: React.FC = () => {
         });
 
         history.push(
-          `/listcategory/${transaction.category_id}/${data.category}`,
+          `/listcategory?category_id=${transaction.category_id}&category_title=${data.category}`,
         );
+
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
+
 
           formRef.current?.setErrors(errors);
 
@@ -165,19 +166,21 @@ const EditTransactions: React.FC = () => {
         });
       }
     },
-    [addToast, history, params, token, transaction],
+    [addToast, history, params, transaction],
   );
 
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
-      const response = await api.get(`/transactions/provider/${provider}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await api.get(
+        `/transactions/provider?provider_id=${provider_id}`,
+        {
+
         },
-      });
-      const responseForCategories = await api.get(`/categories/${provider}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      );
+      const responseForCategories = await api.get(`/categories`, {
+
+        params: {
+          provider_id,
         },
       });
 
@@ -194,7 +197,7 @@ const EditTransactions: React.FC = () => {
         .map((values: any) => ({
           ...values,
           date: values.date.slice(0, 10),
-          value: String(values.value).replace('.', ','), // convert dot to comma
+          value: String(values.value).replace('.', ','),
         }));
 
       const categoriesMap: any = categoriesResponse.map((map: Transaction) =>
@@ -219,11 +222,13 @@ const EditTransactions: React.FC = () => {
       setTransaction(transactionResponseFilter);
       setCategories(categoriesTotalResponse);
 
+
+
       setStartDate(new Date(transactionResponseFilter.date) as any);
     }
 
     loadTransactions();
-  }, [params, provider, token]);
+  }, [params, provider_id]);
 
   return (
     <>
@@ -274,7 +279,7 @@ const EditTransactions: React.FC = () => {
                 <DatePicker
                   name="date"
                   selected={startDate}
-                  dateFormat="yyyy-MM-dd"
+                  dateFormat="dd-MM-yyyy"
                   locale="pt-BR"
                   onChange={(date: any) => {
                     setStartDate(date);
@@ -284,7 +289,7 @@ const EditTransactions: React.FC = () => {
                 <Input name="description" placeholder="Descrição" />
 
                 <Input name="copies" type="hidden" value={1} />
-                <Input name="provider_id" type="hidden" value={provider} />
+                <Input name="provider_id" type="hidden" value={provider_id} />
                 <button type="submit" className="button">
                   Alterar
                   <span>

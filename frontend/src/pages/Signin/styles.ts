@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 // import { shade } from 'polished';
 
-import SignInBackgroundImg from '../../assets/background.svg';
+import SignInBackgroundImg from '../../assets/background.png';
 
 const appearFromLeft = keyframes`
 
@@ -110,19 +110,20 @@ export const Content = styled.div`
     }
 
     button {
+      width: 100%;
+      height: 56px;
+
       display: flex;
       align-items: center;
-      justify-content: left;
+      justify-content: flex-end;
 
       background: var(--color-button-terciary);
       border-radius: 10px;
       border: 0;
       padding: 0;
       color: var(--color-button-text);
-      width: 100%;
-      height: 56px;
+
       margin-top: 16px;
-      font-weight: 00;
       transition: background-color 0.2s;
 
       &:hover {
@@ -134,17 +135,13 @@ export const Content = styled.div`
         background: var(--color-primary-dark);
         width: 56px;
         height: 56px;
-        border-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
         opacity: 0.5;
-        align-items: center;
-        justify-content: left;
         display: flex;
-        margin-right: 25%;
-      }
-
-      svg {
-        margin-right: 15px;
-        margin-left: 20px;
+        align-items: center;
+        justify-content: center;
+        margin-left: 25%;
       }
     }
 

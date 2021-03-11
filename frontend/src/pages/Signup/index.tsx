@@ -5,7 +5,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
-import { FiLogIn, FiUser, FiMail, FiLock } from 'react-icons/fi';
+import { FiArrowRight, FiUser, FiMail, FiLock } from 'react-icons/fi';
 import api from '../../services/api';
 
 import { useToast } from '../../hooks/toast';
@@ -49,7 +49,10 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
+
+
         await api.post('/users', data);
+
 
         history.push('/');
 
@@ -58,14 +61,18 @@ const SignUp: React.FC = () => {
           title: 'Cadastro realizado!',
           description: 'Você já pode fazer seu logon na aplicação',
         });
+
+
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
+
 
           formRef.current?.setErrors(errors);
 
           return;
         }
+
 
         addToast({
           type: 'error',
@@ -107,10 +114,10 @@ const SignUp: React.FC = () => {
           />
 
           <button type="submit" key={buttonKeyValue}>
-            <span>
-              <FiLogIn />
-            </span>
             Cadastrar
+            <span>
+              <FiArrowRight />
+            </span>
           </button>
         </Form>
         <Link to="/">

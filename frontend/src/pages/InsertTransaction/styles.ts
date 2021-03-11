@@ -29,7 +29,7 @@ export const Main = styled.div`
 
 export const Transactions = styled.div`
   width: 50%;
-  max-width: 750px;
+  max-width: 400px;
   margin: 0 auto;
   padding: 0px 30px;
   position: relative;

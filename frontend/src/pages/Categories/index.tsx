@@ -5,7 +5,7 @@ import {
   FiArrowRight,
   FiTrash2,
   FiEdit,
-  FiThumbsDown,
+  FiThumbsUp,
   FiMoreHorizontal,
 } from 'react-icons/fi';
 
@@ -34,6 +34,10 @@ import {
   Right,
 } from './styles';
 
+interface ConfirmButton {
+  [key: string]: any;
+}
+
 interface InsertFormData {
   title: string;
 }
@@ -46,12 +50,6 @@ interface Categories {
   iconConfirm?: Record<string, unknown>;
 }
 
-interface DeleteData {
-  id: string;
-  iconDelete?: Record<string, unknown>;
-  iconEdit?: Record<string, unknown>;
-}
-
 const Categories: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
@@ -60,11 +58,43 @@ const Categories: React.FC = () => {
 
   const [categories, setCategories] = useState<Categories[]>([]);
 
-  const [confirmToDelete, setconfirmToDelete] = useState<object>();
+  const [confirmToDelete, setconfirmToDelete] = useState<ConfirmButton>();
+
+  const [categoryToDelete, setCategoryToDelete] = useState<string>();
 
   const { user } = useAuth();
-  const token = localStorage.getItem('@Planner:token');
+
   const provider = user.id;
+
+
+  const loadTransactions = useCallback(() => {
+    async function loadTransact(): Promise<void> {
+      const responseForCategories = await api.get(`/categories`, {
+
+        params: {
+          provider_id: provider,
+        },
+      });
+
+      const categoriesTotalResponse = responseForCategories.data.categories;
+
+      const categoriesDataAndDelete = categoriesTotalResponse.map(
+        (map: Categories) => ({
+          ...map,
+          description: 'Todas as transações dela serão apagadas',
+          iconDelete: <FiTrash2 size={16} color="#e28090" />,
+          iconEdit: <FiEdit size={16} />,
+          iconConfirm: <FiThumbsUp size={16} fill="#e2cdd0" color="#d41333" />,
+        }),
+      );
+
+      setCategories(categoriesDataAndDelete);
+
+
+    }
+
+    loadTransact();
+  }, [provider]);
 
   const handleSubmit = useCallback(
     async (data: InsertFormData) => {
@@ -80,12 +110,12 @@ const Categories: React.FC = () => {
         });
 
         await api.post(`/categories`, data, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+
         });
 
-        history.replace('/categories');
+
+
+        loadTransactions();
 
         addToast({
           type: 'success',
@@ -94,9 +124,13 @@ const Categories: React.FC = () => {
         });
 
         formRef.current?.reset();
+
+        // console.log(data);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
+
+
 
           formRef.current?.setErrors(errors);
 
@@ -111,7 +145,7 @@ const Categories: React.FC = () => {
         });
       }
     },
-    [addToast, history, token],
+    [addToast, loadTransactions],
   );
 
   const handleRowEdit = useCallback(
@@ -123,10 +157,8 @@ const Categories: React.FC = () => {
 
   const handleRowDelete = useCallback(
     async (id: string) => {
-      await api.delete(`/categories/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      await api.delete(`/categories/${id}/${provider}`, {
+
       });
 
       setconfirmToDelete(
@@ -148,14 +180,19 @@ const Categories: React.FC = () => {
         description: 'Esta operação não poderá ser desfeita',
       });
 
-      history.replace('/categories');
+
+
+      loadTransactions();
     },
-    [history, token, addToast],
+    [addToast, provider, loadTransactions],
   );
 
   const handleRowConfirmToDelete = useCallback(
-    async (id, icon) => {
-      // document.getElementById(id).style.display = 'none';
+    async (id: string, icon) => {
+
+
+      setCategoryToDelete(id);
+      loadTransactions();
 
       setconfirmToDelete(
         <button
@@ -177,36 +214,12 @@ const Categories: React.FC = () => {
         description: 'Todas as transações dela serão apagadas',
       });
     },
-    [addToast, handleRowDelete],
+    [addToast, handleRowDelete, loadTransactions],
   );
 
   useEffect(() => {
-    async function loadTransactions(): Promise<void> {
-      const responseForCategories = await api.get(`/categories/${provider}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const categoriesTotalResponse = responseForCategories.data.categories;
-
-      const categoriesDataAndDelete = categoriesTotalResponse.map(
-        (map: Categories) => ({
-          ...map,
-          description: 'Todas as transações dela serão apagadas',
-          iconDelete: <FiTrash2 size={16} color="#e28090" />,
-          iconEdit: <FiEdit size={16} />,
-          iconConfirm: <FiThumbsDown color="#E83F5B" />,
-        }),
-      );
-
-      setCategories(categoriesDataAndDelete);
-
-      // console.log(response.data);
-    }
-
     loadTransactions();
-  }, [categories, token, provider]);
+  }, [loadTransactions]);
 
   return (
     <>
@@ -234,12 +247,13 @@ const Categories: React.FC = () => {
                       <td> {item.title}</td>
                       <td
                         onClick={() =>
-                          handleRowConfirmToDelete(item.id, item.iconConfirm)}
+                          handleRowConfirmToDelete(item.id, item.iconConfirm)
+                        }
                       >
                         <span key={item.id} id={item.id}>
-                          {confirmToDelete}
+                          {item.id === categoryToDelete ? confirmToDelete : ''}
                         </span>
-                        {item.iconDelete}
+                        {item.id === categoryToDelete ? '' : item.iconDelete}
                       </td>
                     </tr>
                   ))}

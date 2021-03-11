@@ -84,7 +84,7 @@ const DuplicateTransactions: React.FC = () => {
   const [startDate, setStartDate] = useState();
 
   const { user } = useAuth();
-  const token = localStorage.getItem('@Planner:token');
+
   const provider = user.id;
 
   const { addToast } = useToast();
@@ -100,6 +100,8 @@ const DuplicateTransactions: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: InsertFormData) => {
+
+
       try {
         formRef.current?.setErrors({});
 
@@ -108,7 +110,7 @@ const DuplicateTransactions: React.FC = () => {
           value: Yup.string().required('Deve conter um número'),
           type: Yup.string().required('Tipo é obrigatório'),
           category: Yup.string().required('Categoria é obrigatória'),
-          // date: Yup.string().required('Data é obrigatória'),
+
           copies: Yup.string().required('Parcela é obrigatória'),
           description: Yup.string().required('Descrição é obrigatória'),
         });
@@ -139,9 +141,7 @@ const DuplicateTransactions: React.FC = () => {
                 description: `${data.description} - copia ${+index + 1}`,
               },
               {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
+
               },
             );
           });
@@ -170,9 +170,7 @@ const DuplicateTransactions: React.FC = () => {
               description: data.description,
             },
             {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+
             },
           );
 
@@ -183,12 +181,13 @@ const DuplicateTransactions: React.FC = () => {
           });
 
           history.push(
-            `/listcategory/${transaction.category_id}/${data.category}`,
+            `/listcategory?category_id=${transaction.category_id}&category_title=${data.category}`,
           );
         }
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
+
 
           formRef.current?.setErrors(errors);
 
@@ -203,19 +202,21 @@ const DuplicateTransactions: React.FC = () => {
         });
       }
     },
-    [addToast, history, token, transaction],
+    [addToast, history, transaction],
   );
 
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
-      const response = await api.get(`/transactions/provider/${provider}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await api.get(
+        `/transactions/provider?provider_id=${provider}`,
+        {
+
         },
-      });
-      const responseForCategories = await api.get(`/categories/${provider}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      );
+      const responseForCategories = await api.get(`/categories`, {
+
+        params: {
+          provider_id: provider,
         },
       });
 
@@ -261,7 +262,7 @@ const DuplicateTransactions: React.FC = () => {
     }
 
     loadTransactions();
-  }, [params, provider, token]);
+  }, [params, provider]);
 
   return (
     <>
@@ -312,7 +313,7 @@ const DuplicateTransactions: React.FC = () => {
                 <DatePicker
                   name="date"
                   selected={startDate}
-                  dateFormat="yyyy-MM-dd"
+                  dateFormat="dd-MM-yyyy"
                   locale="pt-BR"
                   onChange={(date: any) => {
                     setStartDate(date);

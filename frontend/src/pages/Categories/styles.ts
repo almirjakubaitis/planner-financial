@@ -67,15 +67,10 @@ export const Transactions = styled.div`
   display: flex;
 
   table {
-    border-spacing: 0 8px;
+    border-spacing: 0 0;
     width: 100%;
 
     th {
-      color: var(--color-table-in-title);
-      font-weight: normal;
-      padding: 20px 32px;
-      text-align: left;
-      font-size: 16px;
     }
 
     tr {
@@ -97,7 +92,7 @@ export const Transactions = styled.div`
     }
 
     tr:hover {
-      background: var(--color-input-background);
+      background: var(--color-background-td-hover);
       cursor: text;
     }
 
@@ -106,10 +101,11 @@ export const Transactions = styled.div`
     } */
 
     td {
-      padding: 10px 32px;
+      padding: 15px 32px;
       border: 0;
       font-size: 16px;
       font-weight: normal;
+      border-bottom: 1px solid var(--color-text-in-primary);
 
       &.title {
         color: var(--color-table-in-title);
@@ -125,13 +121,29 @@ export const Transactions = styled.div`
     }
 
     td:first-child {
-      border-radius: 8px 0 0 8px;
+      /* border-radius: 8px 0 0 8px; */
       cursor: pointer;
     }
 
     td:last-child {
-      border-radius: 0 8px 8px 0;
+      /* border-radius: 0 8px 8px 0; */
       cursor: pointer;
+    }
+
+    tr:first-child td:first-child {
+      border-top-left-radius: 4px;
+    }
+
+    tr:first-child td:last-child {
+      border-top-right-radius: 4px;
+    }
+
+    tr:last-child td:first-child {
+      border-bottom-left-radius: 4px;
+    }
+
+    tr:last-child td:last-child {
+      border-bottom-right-radius: 4px;
     }
   }
 

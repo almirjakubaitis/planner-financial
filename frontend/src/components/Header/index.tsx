@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  FiCalendar,
+  FiHome,
   FiFilePlus,
   FiDollarSign,
   FiEdit,
@@ -30,29 +30,23 @@ const Header: React.FC = () => {
           <Link to="/dashboard">
             <img src={logo} alt="Planner" width="180px" />
           </Link>
+          <span> Olá, {firstName[0]} </span>
 
-          {/* <Link to="/dashboard">
-            <img src={back} width="16px" alt="Voltar a Dashboard" /> Voltar
-          </Link> */}
         </p>
 
-        <nav className="mobileNone">
-          <span> Seja bem-vindo(a), {firstName[0]} </span>
-        </nav>
-
         <nav>
+          <Link to="/dashboard">
+            <FiHome className="mobileMoreHeight" />{' '}
+            <span className="mobileNone">Home</span>
+          </Link>
           <Link to="/insert">
             {' '}
             <FiFilePlus className="mobileMoreHeight" />{' '}
             <span className="mobileNone">Adicionar</span>
           </Link>
-          <Link to="/dashboard">
+          <Link to="/transactions">
             <FiDollarSign className="mobileMoreHeight" />{' '}
             <span className="mobileNone">Transações</span>
-          </Link>
-          <Link to="/monthly">
-            <FiCalendar className="mobileMoreHeight" />
-            <span className="mobileNone">Mês</span>
           </Link>
           <Link to="/categories">
             {' '}

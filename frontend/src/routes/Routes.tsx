@@ -12,6 +12,11 @@ interface RouteProps extends ReactDomRouteProps {
   component: React.ComponentType;
 }
 
+// rota privada true/ user autenticado true = OK
+// rota privada true / user autenticado false = Redir para SingIn
+// rota não privada true / user autenticado true = Redir para Dashboard
+// rota não autenticada true / user não autenticado - OK
+
 const Route: React.FC<RouteProps> = ({
   isPrivate = false,
   component: Component,

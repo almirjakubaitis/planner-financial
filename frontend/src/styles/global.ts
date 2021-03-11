@@ -4,6 +4,8 @@ export default createGlobalStyle`
 
 :root {
   --color-background: #d9ddfd;
+  --color-background-td-hover: #E7E9FE;
+  --color-white: #FFFFFF;
   --color-dashboard-background: #702AA7;
   --color-primary: #8257E5;
   --color-primary-dark: #7736AB;
@@ -21,11 +23,11 @@ export default createGlobalStyle`
   --color-nav-user: #FFC090;
   --color-nav-user-two: #ffe1cc;
   --color-nav-menu: #FFFFFF;
-  --color-input-background: #fff;
+  --color-input-background: #FFFFFF;
   --color-input-background-income: #E8F6EE;
   --color-input-background-outcome: #FDECEF;
   --color-input-text: #333333;
-  --color-input-border: #ddd;
+  --color-input-border: #DDD;
   --color-input-placeholder: #969CB2;
   --color-button-principal: #CEA9EA;
   --color-button-secundary: #BA87E1;
@@ -34,6 +36,7 @@ export default createGlobalStyle`
   --color-button-text: #FFFFFF;
   --color-table-in-title: #434B58;
   --color-table-in-text: #5B6279;
+
 
 
 

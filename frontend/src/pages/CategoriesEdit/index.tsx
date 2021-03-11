@@ -11,6 +11,8 @@ import * as Yup from 'yup';
 import api from '../../services/api';
 
 import { useToast } from '../../hooks/toast';
+import { useAuth } from '../../hooks/auth';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import Header from '../../components/Header';
@@ -36,7 +38,9 @@ const CategoriesEdit: React.FC = () => {
 
   const { params } = useRouteMatch<idParams>();
 
-  const token = localStorage.getItem('@Planner:token');
+
+  const { user } = useAuth();
+  const provider = user.id;
 
   const handleSubmit = useCallback(
     async (data: InsertFormData) => {
@@ -51,10 +55,9 @@ const CategoriesEdit: React.FC = () => {
           abortEarly: false,
         });
 
-        await api.put(`/categories/${params.id}`, data, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+
+        await api.put(`/categories/${params.id}/${provider}`, data, {
+
         });
 
         history.replace('/categories');
@@ -80,7 +83,7 @@ const CategoriesEdit: React.FC = () => {
         });
       }
     },
-    [addToast, history, params, token],
+    [addToast, history, params, provider],
   );
 
   return (

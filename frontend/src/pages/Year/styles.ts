@@ -34,7 +34,7 @@ export const Transactions = styled.div`
   padding: 0px 30px;
   position: relative;
   color: var(--color-table-in-text);
-  background: var(--color-card-primary);
+
   border-radius: 8px;
 
   align-content: center;

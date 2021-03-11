@@ -6,8 +6,8 @@ import Route from './Routes';
 import SignIn from '../pages/Signin';
 import SignUp from '../pages/Signup';
 import Dashboard from '../pages/Dashboard';
-import Monthly from '../pages/Monthly';
-import Monthslist from '../pages/Monthslist';
+import AllTransactions from '../pages/AllTransactions';
+import Months from '../pages/Months';
 import ListByCategory from '../pages/ListByCategory';
 import ListByCategoryAndMonth from '../pages/ListByCategoryAndMonth';
 import InsertTransaction from '../pages/InsertTransaction';
@@ -22,18 +22,10 @@ const Routes: React.FC = () => (
     <Route path="/" exact component={SignIn} />
     <Route path="/criar-conta" component={SignUp} />
     <Route path="/dashboard" component={Dashboard} isPrivate />
-    <Route path="/monthly" component={Monthly} isPrivate />
-    <Route path="/months/:month" component={Monthslist} isPrivate />
-    <Route
-      path="/listcategory/:id/:title"
-      component={ListByCategory}
-      isPrivate
-    />
-    <Route
-      path="/listmonth/:id/:month"
-      component={ListByCategoryAndMonth}
-      isPrivate
-    />
+    <Route path="/transactions" component={AllTransactions} isPrivate />
+    <Route path="/months" component={Months} isPrivate />
+    <Route path="/listcategory" component={ListByCategory} isPrivate />
+    <Route path="/listmonth" component={ListByCategoryAndMonth} isPrivate />
     <Route path="/insert" component={InsertTransaction} isPrivate />
     <Route path="/item/:id" component={EditTransaction} isPrivate />
     <Route path="/duplicate/:id" component={DuplicateTransaction} isPrivate />

@@ -5,3 +5,5 @@ declare namespace Express {
     };
   }
 }
+// Anexa ao express uma tipagem
+// Stack Overflow

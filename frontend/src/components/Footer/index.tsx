@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
         <nav>
           <span> usuário: {user.id} </span>
         </nav>
-        <nav> Versão 0.1.3</nav>
+        <nav> Versão 0.1.7</nav>
       </footer>
     </Container>
   );

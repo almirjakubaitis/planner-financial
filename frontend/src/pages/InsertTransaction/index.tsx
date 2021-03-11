@@ -41,7 +41,7 @@ const InsertTransactions: React.FC = () => {
   const [startDate, setStartDate] = useState();
 
   const { user } = useAuth();
-  const token = localStorage.getItem('@Planner:token');
+
   const provider = user.id;
 
   const { addToast } = useToast();
@@ -81,11 +81,7 @@ const InsertTransactions: React.FC = () => {
             title: data.title,
             description: data.description,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
+
         );
 
         history.push('/dashboard');
@@ -95,9 +91,13 @@ const InsertTransactions: React.FC = () => {
           title: 'Sucesso!',
           description: 'Nova transação cadastrada.',
         });
+
+        // console.log(data);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
+
+
 
           formRef.current?.setErrors(errors);
 
@@ -111,14 +111,15 @@ const InsertTransactions: React.FC = () => {
         });
       }
     },
-    [addToast, history, token],
+    [addToast, history],
   );
 
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
-      const responseForCategories = await api.get(`/categories/${provider}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const responseForCategories = await api.get(`/categories`, {
+
+        params: {
+          provider_id: provider,
         },
       });
 
@@ -127,10 +128,12 @@ const InsertTransactions: React.FC = () => {
       setCategories(categoriesTotalResponse);
 
       setStartDate(new Date() as any);
+
+
     }
 
     loadTransactions();
-  }, [provider, token]);
+  }, [provider]);
 
   return (
     <>
@@ -179,7 +182,7 @@ const InsertTransactions: React.FC = () => {
                 <DatePicker
                   name="date"
                   selected={startDate}
-                  dateFormat="yyyy-MM-dd"
+                  dateFormat="dd-MM-yyyy"
                   locale="pt-BR"
                   onChange={(date: any) => {
                     setStartDate(date);
